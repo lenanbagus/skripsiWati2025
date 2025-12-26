@@ -3,14 +3,12 @@ session_start();
 include 'config.php';
 include 'header.php';
 
-// --- 1. LOGIC HAPUS DATA ---
 if(isset($_GET['delete'])){
     $id = $_GET['delete'];
     mysqli_query($conn, "DELETE FROM population_data WHERE id='$id'");
     echo "<script>alert('Data berhasil dihapus!'); window.location='dataset.php';</script>";
 }
 
-// --- 2. LOGIC UPDATE DATA DENGAN EFEK DOMINO ---
 if(isset($_POST['update_data'])){
     $id_edit = $_POST['id'];
     $tahun_edit = $_POST['tahun'];
@@ -18,9 +16,6 @@ if(isset($_POST['update_data'])){
     $x2 = $_POST['x2'];
     $x3 = $_POST['x3'];
     $x4 = $_POST['x4'];
-
-    // A. Update data baris yang diedit terlebih dahulu (X1-X4)
-    // Nilai Y akan diupdate di langkah B secara massal agar akurat
     $query_update_self = "UPDATE population_data SET 
                          kelahiran='$x1', 
                          kematian='$x2', 
@@ -28,13 +23,8 @@ if(isset($_POST['update_data'])){
                          pindah_datang='$x4' 
                          WHERE id='$id_edit'";
     mysqli_query($conn, $query_update_self);
-
-    // B. PROSES RE-KALKULASI SEMUA TAHUN (EFEK DOMINO)
-    // 1. Ambil Setting Penduduk Existing
     $set = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM settings LIMIT 1"));
     $current_pop = $set['base_population'] ?? 0;
-    
-    // 2. Ambil semua data penduduk urut berdasarkan tahun terkecil
     $res_all = mysqli_query($conn, "SELECT * FROM population_data ORDER BY tahun ASC");
     
     while($row = mysqli_fetch_assoc($res_all)){
@@ -44,13 +34,13 @@ if(isset($_POST['update_data'])){
         $pk = $row['pindah_keluar'];
         $pd = $row['pindah_datang'];
 
-        // RUMUS: Penduduk Sekarang = (Lahir - Mati) + (Datang - Keluar) + Penduduk Sebelumnya
+        // (Lahir - Mati) + (Datang - Keluar) + Penduduk Sebelumnya
         $new_y = ($l - $m) + ($pd - $pk) + $current_pop;
 
-        // Update database untuk baris ini
+        // Update database
         mysqli_query($conn, "UPDATE population_data SET jumlah_penduduk='$new_y' WHERE id='$id_row'");
 
-        // Simpan nilai penduduk sekarang untuk menjadi 'Penduduk Sebelumnya' di loop berikutnya
+        // Nilai penduduk sekarang untuk menjadi 'Penduduk Sebelumnya' di loop berikutnya
         $current_pop = $new_y;
     }
 
@@ -59,7 +49,7 @@ if(isset($_POST['update_data'])){
 ?>
 
 <?php
-// Mengambil data setting untuk ditampilkan di atas tabel
+// Mengambil data setting
 $get_setting = mysqli_query($conn, "SELECT * FROM settings LIMIT 1");
 $data_setting = mysqli_fetch_assoc($get_setting);
 $base_year = $data_setting['base_year'] ?? '-';

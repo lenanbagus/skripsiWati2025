@@ -28,7 +28,7 @@ if (!isset($_SESSION['login'])) {
         <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" href="kriteria.php">Variabel</a></li>
         <li class="nav-item"><a class="nav-link" href="dataset.php">Data Set</a></li>
-        <li class="nav-item"><a class="nav-link" href="regresi.php">Regresi Linear Berganda</a></li>
+        <li class="nav-item"><a class="nav-link" href="regresi.php">Hasil Analisis</a></li>
       </ul>
       <a href="logout.php" class="btn btn-danger btn-sm">Logout</a>
     </div>

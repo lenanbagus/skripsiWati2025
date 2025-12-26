@@ -3,7 +3,7 @@ session_start();
 include 'config.php';
 include 'header.php';
 
-// --- FUNGSI MATEMATIKA (Matrix Operations) ---
+// --- Matrix Operations ---
 function matrix_multiply($A, $B) {
     $m = count($A); $n = count($A[0]); $p = count($B[0]);
     $C = array_fill(0, $m, array_fill(0, $p, 0));
@@ -22,7 +22,7 @@ function matrix_transpose($A) {
 }
 
 function matrix_inverse($A) {
-    // Gauss-Jordan Elimination untuk invers matriks
+    // Gauss-Jordan Elimination
     $n = count($A);
     $I = array(); // Matriks Identitas
     for ($i=0; $i<$n; $i++) {
@@ -32,7 +32,6 @@ function matrix_inverse($A) {
     }
 
 // --- FUNGSI UJI ASUMSI KLASIK ---
-
 // 1. Uji Autokorelasi (Durbin-Watson)
 function calculate_dw($residuals) {
     $sum_diff_sq = 0;
@@ -85,7 +84,7 @@ function get_hetero_status($residuals, $X) {
     // Eliminasi
     for ($j=0; $j<$n; $j++) {
         $pivot = $A[$j][$j];
-        if($pivot == 0) continue; // Singularity check needed theoretically
+        if($pivot == 0) continue;
         for ($k=0; $k<2*$n; $k++) $A[$j][$k] /= $pivot;
         for ($i=0; $i<$n; $i++) {
             if ($i != $j) {

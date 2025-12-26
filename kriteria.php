@@ -7,7 +7,7 @@ include 'header.php';
 if (isset($_POST['save_settings'])) {
     $by = $_POST['base_year'];
     $bp = $_POST['base_population'];
-    // Cek apakah data sudah ada
+    // Cek data existing
     $check = mysqli_query($conn, "SELECT * FROM settings LIMIT 1");
     if (mysqli_num_rows($check) > 0) {
         mysqli_query($conn, "UPDATE settings SET base_year='$by', base_population='$bp'");
@@ -28,16 +28,11 @@ if (isset($_POST['add_data'])) {
     // Hitung Y otomatis (Logic: Cari Y tahun sebelumnya, jika tidak ada pakai base_population)
     // Untuk simplifikasi, di sini kita simpan input X dulu. Y akan dihitung saat display di dataset.php
     // ATAU: Kita simpan Y langsung di sini berdasarkan logic.
-
     // Ambil base population
     $set = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM settings LIMIT 1"));
     $base_pop = $set['base_population'] ?? 0;
     
-    // Hitung populasi sebelumnya (kumulatif). Ini agak kompleks kalau CRUD.
-    // Solusi: Simpan Raw Data X. Di dataset.php kita hitung Y on the fly atau update row Y.
-    // Agar sesuai permintaan "otomatis terhitung", kita hitung kasar di sini:
     // Y = (X1 - X2) + (X4 - X3) + Penduduk_Sebelumnya
-    
     // Ambil data tahun sebelumnya
     $prev_year = $thn - 1;
     $qry_prev = mysqli_query($conn, "SELECT jumlah_penduduk FROM population_data WHERE tahun='$prev_year'");
