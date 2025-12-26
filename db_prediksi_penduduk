@@ -1,0 +1,28 @@
+-- Tabel Users
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Tabel Pengaturan (Untuk Tahun Awal & Penduduk Existing)
+CREATE TABLE settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    base_year INT NOT NULL,
+    base_population BIGINT NOT NULL
+);
+
+-- Tabel Data Penduduk
+CREATE TABLE population_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tahun INT NOT NULL,
+    kelahiran INT NOT NULL,
+    kematian INT NOT NULL,
+    pindah_keluar INT NOT NULL,
+    pindah_datang INT NOT NULL,
+    jumlah_penduduk BIGINT NOT NULL
+);
+
+-- Insert User Default (Admin/admin123)
+INSERT INTO users (username, password) VALUES ('admin', '$2y$10$8K1p/a0dL1e.X/a.q.X.xu.X.X.X.X.X.X.X.X'); 
+-- Note: Password hash di atas hanyalah contoh, fitur register akan menghandle hash asli.
