@@ -38,18 +38,29 @@ if (isset($_POST['login'])) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Login & Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
     <div class="container">
+        <div class="row mb-4">
+    <div class="col-12 text-center">
+        <img src="ypkp.png" alt="Logo Universitas Sanggabuana" class="img-fluid" style="max-height: 120px;">
+        <h2 class="mt-2 fw-bold">Universitas Sangga Buana YPKP</h2>
+        <p class="text-muted">Sistem Informasi Prediksi Lonjakan Penduduk</p>
+        <hr style="width: 50%; margin: auto; border-top: 3px solid #0d6efd;">
+    </div>
+</div>
         <div class="row justify-content-center">
             <div class="col-md-5">
                 <div class="card shadow">
                     <div class="card-header text-center bg-primary text-white">
-                        <h4>Aplikasi Prediksi Penduduk</h4>
+                        <h4>Login or Register</h4>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
@@ -64,8 +75,16 @@ if (isset($_POST['login'])) {
                                         <input type="text" name="username" class="form-control" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label>Password</label>
-                                        <input type="password" name="password" class="form-control" required>
+                                        <label class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password" class="form-control" required>
+
+                                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                <i class="bi bi-eye" id="eyeIcon"></i>
+                                            </button>
+                                        </div>
+                                        <!-- <label>Password</label>
+                                        <input type="password" name="password" class="form-control" required> -->
                                     </div>
                                     <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
                                 </form>
@@ -94,5 +113,22 @@ if (isset($_POST['login'])) {
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        const eyeIcon = document.querySelector('#eyeIcon');
+
+        togglePassword.addEventListener('click', function(e) {
+            // Toggle tipe input antara 'password' dan 'text'
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            // Toggle ikon antara mata terbuka dan mata tertutup (bi-eye / bi-eye-slash)
+            eyeIcon.classList.toggle('bi-eye');
+            eyeIcon.classList.toggle('bi-eye-slash');
+        });
+    </script>
+    
 </body>
+
 </html>
